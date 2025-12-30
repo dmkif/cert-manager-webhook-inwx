@@ -10,6 +10,10 @@ The helm chart is listed at Artifact Hub in repository [smueller18](https://arti
 - [kubernetes](https://kubernetes.io/) >= v1.18.0
 - [cert-manager](https://cert-manager.io/) >= 1.0.0
 
+## API compatibility
+
+INWX returns DNS record IDs as strings. This webhook uses `goinwx` v0.12.0+ which handles string IDs for create/info/update/delete. If you integrate with the INWX API directly, treat record IDs as strings.
+
 ## Configuration
 
 The following table lists the configurable parameters of the cert-manager chart and their default values.

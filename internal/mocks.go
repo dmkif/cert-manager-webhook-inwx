@@ -23,14 +23,14 @@ type MockDNSClient struct {
 	LogoutCalled     bool
 	UnlockCalled     bool
 	CreatedRecords   []*goinwx.NameserverRecordRequest
-	DeletedRecordIDs []int
+	DeletedRecordIDs []string
 }
 
 func NewMockDNSClient() *MockDNSClient {
 	return &MockDNSClient{
 		Records:          make(map[string]*goinwx.NameserverRecord),
 		CreatedRecords:   make([]*goinwx.NameserverRecordRequest, 0),
-		DeletedRecordIDs: make([]int, 0),
+		DeletedRecordIDs: make([]string, 0),
 	}
 }
 
@@ -52,7 +52,7 @@ func (m *MockDNSClient) CreateRecord(request *goinwx.NameserverRecordRequest) er
 	m.CreatedRecords = append(m.CreatedRecords, request)
 
 	// Create a mock record
-	recordID := len(m.Records) + 1
+	recordID := fmt.Sprintf("%d", len(m.Records)+1)
 	key := fmt.Sprintf("%s-%s", request.Domain, request.Name)
 	m.Records[key] = &goinwx.NameserverRecord{
 		ID:      recordID,
@@ -82,7 +82,7 @@ func (m *MockDNSClient) InfoRecords(request *goinwx.NameserverInfoRequest) (*Nam
 	}, nil
 }
 
-func (m *MockDNSClient) DeleteRecord(recordID int) error {
+func (m *MockDNSClient) DeleteRecord(recordID string) error {
 	if m.DeleteRecordError != nil {
 		return m.DeleteRecordError
 	}
